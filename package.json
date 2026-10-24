@@ -1,0 +1,16 @@
+{
+  "name": "fourseasons",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test tests/mobile/launch.test.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Independent Android QA automation portfolio using Appium, UiAutomator2, WebdriverIO, and JavaScript.",
+  "devDependencies": {
+    "webdriverio": "^9.32.0"
+  }
+}
