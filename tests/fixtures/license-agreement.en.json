@@ -1,0 +1,19 @@
+{
+  "baseline": {
+    "appVersion": "4.10.0",
+    "inspectedOn": "2026-10-24",
+    "source": "Observed English UI on the physical Android device; a regression baseline, not official product requirements."
+  },
+  "title": "END USER LICENSE AGREEMENT",
+  "message": "To use Four Seasons on this device you must accept the Terms and Conditions",
+  "readTerms": "READ TERMS",
+  "decline": "DECLINE",
+  "accept": "ACCEPT",
+  "termsTitle": "Terms and Conditions",
+  "termsBodyCheckpoints": [
+    "Terms and Conditions",
+    "Last Updated: December, 2019",
+    "Four Seasons Hotels Limited"
+  ],
+  "destinationText": "EXPLORE"
+}

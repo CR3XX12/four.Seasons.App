@@ -4,7 +4,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "node --test tests/mobile/launch.test.cjs"
+    "test": "npm run test:mobile:smoke",
+    "test:mobile:smoke": "node --test tests/mobile/launch.test.cjs",
+    "test:mobile:first-use": "node --test tests/mobile/first-use-license.test.cjs"
   },
   "keywords": [],
   "author": "",
