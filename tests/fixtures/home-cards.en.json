@@ -1,0 +1,15 @@
+{
+  "baseline": {
+    "inspectedOn": "2026-10-26",
+    "source": "English home feed inspected on the physical Android device; promotional content may change."
+  },
+  "cards": [
+    { "heading": "HOTELS & RESORTS", "checkpoint": "hotels-resorts" },
+    { "heading": "A WORLD THAT KNOWS YOU BY HEART", "checkpoint": "world-by-heart" },
+    { "heading": "RESIDENCES", "checkpoint": "residences" },
+    { "heading": "VILLA & RESIDENCE RENTALS", "checkpoint": "villa-residence-rentals" },
+    { "heading": "SHOP AT FOUR SEASONS", "checkpoint": "shop-four-seasons" },
+    { "heading": "PRIVATE JET EXPERIENCE", "checkpoint": "private-jet" },
+    { "heading": "FOUR SEASONS YACHTS", "checkpoint": "yachts" }
+  ]
+}

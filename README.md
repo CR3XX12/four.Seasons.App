@@ -6,7 +6,9 @@ Independent learning and portfolio project using JavaScript, Appium, UiAutomator
 
 - MOB-001: Activate the installed Android app and verify its foreground package.
 - MOB-002: Clear app data, verify the first-use agreement, decline and reopen, check terms content, return, and accept to reach Explore.
-- Both tests have passing device executions documented in [EXECUTION_REPORT.md](EXECUTION_REPORT.md).
+- MOB-003: Dismiss the menu tooltip and verify the welcome message (user-authored test).
+- MOB-004: Scroll the home feed and verify seven inspected promotional card headings and their Discover controls.
+- Execution results and limitations are documented in [EXECUTION_REPORT.md](EXECUTION_REPORT.md).
 - Further public navigation coverage and a separate mock API exercise are planned.
 
 See [TEST_CASES.md](TEST_CASES.md) for test definitions and [TEST_PLAN.md](TEST_PLAN.md) for scope and approach.
@@ -45,14 +47,35 @@ npm.cmd run test:mobile:first-use
 
 Leave Appium running and end Inspector sessions before execution. Run tests sequentially against the physical phone. `npm.cmd test` runs only the smoke test; it does not run the data-clearing scenario.
 
+### Home-screen checks
+
+With the license accepted and the menu tooltip dismissed, run:
+
+```powershell
+npm.cmd run test:mobile:home-cards
+```
+
+This preserves app data, returns the signed-out home feed to the top, checks seven cards while scrolling down, and returns to the top again. It verifies each heading and its own visible, enabled, clickable Discover control without opening links. The baseline includes Villa & Residence Rentals, observed between Residences and Shop at Four Seasons. It checks the listed cards in traversal order, not the complete catalog or absence of additional cards. Artwork and destination behavior are not covered.
+
+The user-authored onboarding check runs independently with fresh setup:
+
+```powershell
+npm.cmd run test:mobile:onboarding
+```
+
+**This onboarding command clears Four Seasons app data on every run**, including local sign-in state and preferences. Shared setup terminates the app, clears data once, launches it, accepts the license, and waits for the menu tooltip. The test then checks the tooltip, dismisses it, and verifies the welcome message. It does not invoke the license test or repeat its Decline and Read Terms assertions. Running the test file directly also performs this reset.
+
+Both first-use and onboarding scenarios use `tests/support/first-use-setup.cjs`. The license test uses only reset-and-launch; onboarding uses fresh-home preparation. Run them sequentially on the physical phone. The default smoke command and home-card command preserve app data.
+
 ### Project structure
 
 ```text
 config/mobile.cjs                         Appium connection and capabilities
 tests/mobile/*.test.cjs                  Test workflows and assertions
-tests/screens/license-agreement.screen.cjs Inspected locators and screen interactions
-tests/fixtures/license-agreement.en.json  Reviewed English text checkpoints
+tests/screens/*.screen.cjs               Inspected locators and screen interactions
+tests/fixtures/*.en.json                 Reviewed English content baselines
 tests/support/mobile-session.cjs         Session lifecycle and local evidence
+tests/support/first-use-setup.cjs        Shared reset/launch and fresh-home setup
 artifacts/                              Generated results and screenshots (ignored)
 ```
 

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "npm run test:mobile:smoke",
     "test:mobile:smoke": "node --test tests/mobile/launch.test.cjs",
-    "test:mobile:first-use": "node --test tests/mobile/first-use-license.test.cjs"
+    "test:mobile:first-use": "node --test tests/mobile/first-use-license.test.cjs",
+    "test:mobile:home-cards": "node --test tests/mobile/home-cards.test.cjs",
+    "test:mobile:onboarding": "node --test tests/mobile/onboarding.test.cjs"
   },
   "keywords": [],
   "author": "",

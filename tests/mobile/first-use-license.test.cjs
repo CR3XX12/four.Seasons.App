@@ -1,19 +1,14 @@
 const test = require('node:test');
 const { appPackage } = require('../../config/mobile.cjs');
 const { withMobileSession } = require('../support/mobile-session.cjs');
+const { resetAndLaunchApp } = require('../support/first-use-setup.cjs');
 const { LicenseAgreementScreen } = require('../screens/license-agreement.screen.cjs');
 const expected = require('../fixtures/license-agreement.en.json');
 
 test('MOB-002: first-use license decline, reopen, read terms, and accept', async () => {
   await withMobileSession('MOB-002', async ({ driver, checkpoint, result }) => {
     const license = new LicenseAgreementScreen(driver);
-    // This explicitly selected scenario clears only the app under test, once.
-    await driver.terminateApp(appPackage);
-    // Driver 6.1.1 returns null on success; protocol errors still reject this call.
-    await driver.execute('mobile: clearApp', { appId: appPackage });
-    result.appDataCleared = true;
-
-    await driver.activateApp(appPackage);
+    await resetAndLaunchApp(driver, result);
     await license.assertAgreement();
     await checkpoint('fresh-license');
 

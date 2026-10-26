@@ -1,11 +1,11 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { appPackage } = require("../../config/mobile.cjs");
 const { withMobileSession } = require("../support/mobile-session.cjs");
+const { prepareFreshHome } = require("../support/first-use-setup.cjs");
 
 test("MOB-003: dismiss the menu tooltip and verify the welcome message", async () => {
-  await withMobileSession("MOB-003", async ({ driver, checkpoint }) => {
-    await driver.activateApp(appPackage);
+  await withMobileSession("MOB-003", async ({ driver, checkpoint, result }) => {
+    await prepareFreshHome(driver, result);
 
     const tooltip = driver.$(
       'android=new UiSelector().text("Our Menu lives here. Tap for quick access to everything you see and do.")',
@@ -21,7 +21,7 @@ test("MOB-003: dismiss the menu tooltip and verify the welcome message", async (
 
     await tooltip.waitForDisplayed({ reverse: true, timeout: 10000 });
 
-      const welcomeMessage = driver.$(
+    const welcomeMessage = driver.$(
       'android=new UiSelector().textContains("Sign in or create your profile")'
     );
     await welcomeMessage.waitForDisplayed({ timeout: 10000 });
