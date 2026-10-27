@@ -2,12 +2,13 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { appPackage } = require('../../config/mobile.cjs');
 const { withMobileSession } = require('../support/mobile-session.cjs');
+const { ensureHomeReady } = require('../support/home-setup.cjs');
 const { HomeCardsScreen } = require('../screens/home-cards.screen.cjs');
 const { cards } = require('../fixtures/home-cards.en.json');
 
 test('MOB-004: scroll the home feed and verify promotional cards', async () => {
   await withMobileSession('MOB-004', async ({ driver, checkpoint, result }) => {
-    await driver.activateApp(appPackage);
+    await ensureHomeReady(driver, result);
     const home = new HomeCardsScreen(driver);
     await home.returnToTop();
 
