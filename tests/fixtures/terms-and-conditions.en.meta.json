@@ -1,0 +1,13 @@
+{
+  "capturedOn": "2026-10-27",
+  "appPackage": "com.fourseasons.mobileapp",
+  "appVersion": "4.10.0",
+  "language": "en",
+  "status": "Current installed agreement accepted as the portfolio baseline at the project owner request; not an official legal approval.",
+  "documentLastUpdated": "December, 2019",
+  "extraction": "Ordered nonblank text attributes inside the native WebView with allowInvisibleElements enabled; full text identical in top and bottom snapshots.",
+  "initialNormalizedCharacters": 41638,
+  "initialNormalizedSha256": "affded35750e3f75dfdfbd138da5f6070d0a6786fea8bb788d45728ea1a9dd35",
+  "comparison": "Collapse whitespace and trim only. Preserve wording, case, punctuation, Unicode characters, and document order.",
+  "limitations": "Text content only; does not validate formatting, link destinations, legal correctness, or all text visibility. Final address is partly behind the Android navigation overlay in the bottom screenshot."
+}

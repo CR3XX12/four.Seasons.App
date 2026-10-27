@@ -28,16 +28,12 @@ class LicenseAgreementScreen {
   async readTerms() { await this.element('eulaReadTermsLayout').click(); }
   async accept() { await this.element('eulaAccept').click(); }
 
-  async assertTerms() {
+  async waitForTerms() {
     await this.element('fragterms_title').waitForDisplayed({ timeout: 10000 });
     assert.equal(await this.element('fragterms_title').getText(), expected.termsTitle);
-    // The unloaded WebView has an ID that disappears when its text is ready.
-    // Scope to the loaded WebView so the native header cannot satisfy body checks.
-    for (const phrase of expected.termsBodyCheckpoints) {
-      const content = this.driver.$(`//android.webkit.WebView//android.widget.TextView[contains(@text, ${JSON.stringify(phrase)})]`);
-      await content.waitForDisplayed({ timeout: 20000, interval: 500 });
-      assert.ok((await content.getText()).includes(phrase), `Terms body should contain: ${phrase}`);
-    }
+    // Wait for loaded body content, not only the identical native header.
+    await this.driver.$('//android.webkit.WebView//android.widget.TextView[@text="Terms and Conditions"]')
+      .waitForDisplayed({ timeout: 20000 });
   }
 
   async closeTerms() {

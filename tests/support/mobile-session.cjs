@@ -33,7 +33,7 @@ async function withMobileSession(testId, scenario) {
       deviceModel: driver.capabilities.deviceModel,
       nodeVersion: process.version,
     };
-    await scenario({ driver, checkpoint, result });
+    await scenario({ driver, checkpoint, result, artifactDirectory: directory });
     result.status = 'PASS';
   } catch (error) {
     failure = error;

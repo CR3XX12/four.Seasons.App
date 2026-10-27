@@ -8,13 +8,15 @@
     "test:mobile:smoke": "node --test tests/mobile/launch.test.cjs",
     "test:mobile:first-use": "node --test tests/mobile/first-use-license.test.cjs",
     "test:mobile:home-cards": "node --test tests/mobile/home-cards.test.cjs",
-    "test:mobile:onboarding": "node --test tests/mobile/onboarding.test.cjs"
+    "test:mobile:onboarding": "node --test tests/mobile/onboarding.test.cjs",
+    "test:unit": "node --test tests/unit/*.test.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "Independent Android QA automation portfolio using Appium, UiAutomator2, WebdriverIO, and JavaScript.",
   "devDependencies": {
+    "cheerio": "1.2.0",
     "webdriverio": "^9.32.0"
   }
 }

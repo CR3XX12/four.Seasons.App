@@ -1,12 +1,19 @@
 const test = require('node:test');
+const assert = require('node:assert/strict');
+const { readFile, writeFile } = require('node:fs/promises');
+const path = require('node:path');
+const { createHash } = require('node:crypto');
 const { appPackage } = require('../../config/mobile.cjs');
 const { withMobileSession } = require('../support/mobile-session.cjs');
 const { resetAndLaunchApp } = require('../support/first-use-setup.cjs');
 const { LicenseAgreementScreen } = require('../screens/license-agreement.screen.cjs');
-const expected = require('../fixtures/license-agreement.en.json');
+const { captureCompleteTerms, compareTerms, normalizeTerms } = require('../support/terms-content.cjs');
 
 test('MOB-002: first-use license decline, reopen, read terms, and accept', async () => {
-  await withMobileSession('MOB-002', async ({ driver, checkpoint, result }) => {
+  const expectedTerms = await readFile(path.join(__dirname, '../fixtures/terms-and-conditions.en.txt'), 'utf8');
+  assert.ok(normalizeTerms(expectedTerms).length, 'Expected terms baseline must not be empty');
+
+  await withMobileSession('MOB-002', async ({ driver, checkpoint, result, artifactDirectory }) => {
     const license = new LicenseAgreementScreen(driver);
     await resetAndLaunchApp(driver, result);
     await license.assertAgreement();
@@ -25,9 +32,19 @@ test('MOB-002: first-use license decline, reopen, read terms, and accept', async
     await checkpoint('license-after-decline');
 
     await license.readTerms();
-    await license.assertTerms();
+    await license.waitForTerms();
+    const actualTerms = await captureCompleteTerms(driver);
+    await writeFile(path.join(artifactDirectory, 'actual-terms.txt'), actualTerms);
+    const comparison = compareTerms(expectedTerms, actualTerms);
+    comparison.expectedSha256 = createHash('sha256').update(normalizeTerms(expectedTerms)).digest('hex');
+    comparison.actualSha256 = createHash('sha256').update(normalizeTerms(actualTerms)).digest('hex');
+    await writeFile(path.join(artifactDirectory, 'terms-comparison.json'), JSON.stringify(comparison, null, 2));
+    result.termsComparison = comparison;
     await checkpoint('terms');
-    result.termsContentVerification = { method: 'Native accessibility text inside WebView', matchedCheckpoints: expected.termsBodyCheckpoints };
+    assert.equal(comparison.matches, true,
+      `Agreement differs at normalized character ${comparison.firstDifferenceOffset}. ` +
+      `Expected: ${JSON.stringify(comparison.expectedContext)}; actual: ${JSON.stringify(comparison.actualContext)}. ` +
+      'Review actual-terms.txt and terms-comparison.json before changing the baseline.');
 
     await license.closeTerms();
     await checkpoint('license-after-terms');

@@ -17,9 +17,21 @@ test("MOB-003: dismiss the menu tooltip and verify the welcome message", async (
 
     const closeButton = driver.$('android=new UiSelector().text("CLOSE")');
     await closeButton.waitForDisplayed({ timeout: 10000 });
+    const dismissalStartedAt = performance.now();
     await closeButton.click();
 
-    await tooltip.waitForDisplayed({ reverse: true, timeout: 10000 });
+    // Closing removes this element. Query afresh rather than checking its stale ID.
+    await driver.waitUntil(async () => {
+      const remainingTooltips = await driver.$$(
+        'android=new UiSelector().text("Our Menu lives here. Tap for quick access to everything you see and do.")'
+      );
+      return remainingTooltips.length === 0;
+    }, {
+      timeout: 10000,
+      interval: 250,
+      timeoutMsg: "Menu tooltip should be removed after Close",
+    });
+    result.tooltipDismissalMs = Math.round(performance.now() - dismissalStartedAt);
 
     const welcomeMessage = driver.$(
       'android=new UiSelector().textContains("Sign in or create your profile")'
