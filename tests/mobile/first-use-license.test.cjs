@@ -14,6 +14,8 @@ test('MOB-002: first-use license decline, reopen, read terms, and accept', async
   assert.ok(normalizeTerms(expectedTerms).length, 'Expected terms baseline must not be empty');
 
   await withMobileSession('MOB-002', async ({ driver, checkpoint, result, artifactDirectory }) => {
+    // Preserve this run's expected document even if the fixture is edited later.
+    await writeFile(path.join(artifactDirectory, 'expected-terms.txt'), expectedTerms);
     const license = new LicenseAgreementScreen(driver);
     await resetAndLaunchApp(driver, result);
     await license.assertAgreement();

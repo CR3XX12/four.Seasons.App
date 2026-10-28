@@ -81,6 +81,29 @@ artifacts/                              Generated results and screenshots (ignor
 
 The terms WebView initially exposes a resource ID, then replaces it with accessible body text after loading. Terms assertions wait for text inside the WebView, so the native screen heading cannot satisfy a body-content assertion. The baseline checks its heading, last-updated line, and company name; it does not compare the complete agreement. This is an observed regression baseline for app 4.10.0, not an official Four Seasons specification. Review text changes before changing the fixture. No OCR or additional dependency is required.
 
+## Local HTML reports
+
+Open the QA report viewer in your default browser:
+
+```powershell
+npm.cmd run report:open
+```
+
+To generate it without opening a browser, use `npm.cmd run report`. The output is `artifacts/report/index.html`; you can open that file directly. No server, account, hosted service, or phone connection is needed to browse existing evidence. Keep the report folder alongside the run folders because screenshot and artifact links are relative.
+
+The viewer includes:
+
+- Searchable run history with status/test filters and a latest-run-per-test option. Counts describe saved executions, not a single suite run or application defect count.
+- An investigation view with the failure message, expandable stack trace, source excerpt, and original failure screenshot.
+- Terms comparisons with highlighted changed text, normalized character counts, source-text line/column where available, and captured document links.
+- A chronological screenshot gallery with enlargement, raw artifacts, device/runtime details, and setup actions.
+
+New test executions refresh the HTML report after saving their result. Refresh the browser to load the new snapshot. Report-generation errors are warned in the terminal and do not replace the real test result. Tests that fail now save a source excerpt at failure time; older runs show the current workspace excerpt with an explicit warning that historical code may differ.
+
+License runs now save `expected-terms.txt` alongside `actual-terms.txt`, preserving the expected document from that specific execution. Older runs without expected snapshots show their captured mismatch excerpts; the viewer never substitutes today's fixture. The comparison highlights the first changed span, which can be abbreviated for large or multiple changes; open the document snapshots for the full text. Screenshots remain unmodified and may show a different viewport from an off-screen mismatch.
+
+Run-local `.log` files appear as attachments when present. Terminal output is not automatically captured; the existing top-level logs are separate files unless saved inside a run directory. The viewer reads existing results and never changes fixtures or test outcomes. Generated HTML and evidence stay ignored by Git; review content before sharing, especially screenshots and account/device details. This is a local custom report viewer, not a connection to Playwright, Cypress Cloud, or Azure.
+
 ## Evidence and limitations
 
 Each run writes `artifacts/<timestamp>-<test-id>/result.json` with status, timing, device capabilities, checkpoints, and captured errors. Checkpoint screenshots and failure screenshots/XML are saved locally when available. Evidence failures are recorded separately and do not replace the original test error. Session cleanup failures fail the test. Generated artifacts, environment files, and dependencies are excluded from Git.

@@ -38,6 +38,13 @@ async function withMobileSession(testId, scenario) {
   } catch (error) {
     failure = error;
     result.error = error.stack || String(error);
+    try {
+      const { captureSource } = require('../../reporting/build-report.cjs');
+      result.failureSource = await captureSource(result.error, path.resolve(__dirname, '../..'));
+      if (result.failureSource) result.failureSource.note = 'Source excerpt captured when this test failed.';
+    } catch (sourceError) {
+      result.evidenceErrors.push({ operation: 'source-excerpt', message: sourceError.message });
+    }
     if (driver) {
       await checkpoint('failure');
       try {
@@ -65,6 +72,14 @@ async function withMobileSession(testId, scenario) {
     }
   }
   console.log(`Evidence: ${directory}`);
+  try {
+    const { buildReport } = require('../../reporting/build-report.cjs');
+    const report = await buildReport();
+    console.log(`HTML report: ${report.file}`);
+  } catch (error) {
+    // Report rendering must never hide the actual test failure or change its result.
+    console.warn('Could not refresh HTML report:', error.message);
+  }
   if (failure) throw failure;
 }
 

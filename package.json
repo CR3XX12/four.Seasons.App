@@ -9,7 +9,9 @@
     "test:mobile:first-use": "node --test tests/mobile/first-use-license.test.cjs",
     "test:mobile:home-cards": "node --test tests/mobile/home-cards.test.cjs",
     "test:mobile:onboarding": "node --test tests/mobile/onboarding.test.cjs",
-    "test:unit": "node --test tests/unit/*.test.cjs"
+    "test:unit": "node --test tests/unit/*.test.cjs",
+    "report": "node scripts/report.cjs",
+    "report:open": "node scripts/report.cjs --open"
   },
   "keywords": [],
   "author": "",
